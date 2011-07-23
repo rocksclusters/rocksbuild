@@ -1,5 +1,5 @@
 #
-# $Id: Makefile,v 1.1 2011/07/19 20:02:00 phil Exp $
+# $Id: Makefile,v 1.2 2011/07/23 01:43:42 phil Exp $
 #
 # @Copyright@
 # 
@@ -55,6 +55,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.2  2011/07/23 01:43:42  phil
+# make RPMS directory -- needed when rocks-devel rpm is not yet built
+#
 # Revision 1.1  2011/07/19 20:02:00  phil
 # A small helper roll.
 #
@@ -77,6 +80,7 @@ buildrpms:
 	rpm -Uvh --nodeps --oldpackage --force RPMS/$(ARCH)/kudzu*.rpm;	\
 	make -C src/anaconda rpm;			\
 	rpm -Uvh --nodeps --oldpackage --force RPMS/$(ARCH)/anaconda*.rpm; \
+	if [ ! -d RPMS/$(ARCH) ]; then mkdir -p RPMS/$(ARCH); fi; \
 	cp RPMS/$(ARCH)/rocks-devel*rpm ../rocksbuild/RPMS/$(ARCH); \
 	cp RPMS/$(ARCH)/kudzu*rpm ../rocksbuild/RPMS/$(ARCH); \
 	cp RPMS/$(ARCH)/anaconda*rpm ../rocksbuild/RPMS/$(ARCH) \

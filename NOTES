@@ -1,0 +1,11 @@
+ yum install libXxf86misc-devel libXt-devel audit-libs-devel libdhpc6client
+ 1071  yum install libXxf86misc-devel libXt-devel audit-libs-devel libdhpc6client
+ 1074  yum install libdhcp6client
+ 1075  yum install libdhcp6client
+ 1076  history | grep install
+ 1080  yum install libdhcp4client
+ 1083  yum install libdhcp4client-devel
+ 1085  yum install libdhcp6client-devel
+ 1089  history | grep install
+ yum install libXext-devel
+

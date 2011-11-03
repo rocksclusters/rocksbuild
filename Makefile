@@ -1,5 +1,5 @@
 #
-# $Id: Makefile,v 1.3 2011/07/23 02:31:16 phil Exp $
+# $Id: Makefile,v 1.4 2011/11/03 01:04:24 phil Exp $
 #
 # @Copyright@
 # 
@@ -55,6 +55,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.4  2011/11/03 01:04:24  phil
+# Build directories not already built
+#
 # Revision 1.3  2011/07/23 02:31:16  phil
 # Viper Copyright
 #
@@ -72,7 +75,12 @@ ARCH=`/bin/arch`
 -include $(ROLLSROOT)/etc/Rolls.mk
 -include Rolls.mk
 
-roll::  buildrpms
+roll::  dirs buildrpms
+
+dirs:	
+	if [ ! -d RPMS/$(ARCH) ]; then mkdir -p RPMS/$(ARCH); fi
+	if [ ! -d RPMS/noarch ]; then mkdir -p RPMS/noarch; fi
+
 
 buildrpms:
 	(cd ../base;				\

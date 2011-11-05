@@ -1,5 +1,5 @@
 #
-# $Id: Makefile,v 1.4 2011/11/03 01:04:24 phil Exp $
+# $Id: Makefile,v 1.5 2011/11/05 04:15:22 phil Exp $
 #
 # @Copyright@
 # 
@@ -55,6 +55,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.5  2011/11/05 04:15:22  phil
+# need ganglia-monitor-core to be installed to build ganglia-pylib in the base
+#
 # Revision 1.4  2011/11/03 01:04:24  phil
 # Build directories not already built
 #
@@ -96,3 +99,8 @@ buildrpms:
 	cp RPMS/$(ARCH)/kudzu*rpm ../rocksbuild/RPMS/$(ARCH); \
 	cp RPMS/$(ARCH)/anaconda*rpm ../rocksbuild/RPMS/$(ARCH) \
 	)
+	(cd ../ganglia;				\
+	make -C src/monitor-core rpm;			\
+	rpm -Uvh --force RPMS/$(ARCH)/ganglia-monitor-core*rpm	\
+	)
+	

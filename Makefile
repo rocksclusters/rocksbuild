@@ -1,5 +1,5 @@
 #
-# $Id: Makefile,v 1.6 2012/01/04 19:37:00 phil Exp $
+# $Id: Makefile,v 1.7 2012/01/04 23:18:45 phil Exp $
 #
 # @Copyright@
 # 
@@ -55,6 +55,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.7  2012/01/04 23:18:45  phil
+# Add confuse and rrdtool so that monitor-core can build properly
+#
 # Revision 1.6  2012/01/04 19:37:00  phil
 # Small tweaks for build
 #
@@ -88,19 +91,29 @@ dirs:
 	if [ ! -d RPMS/noarch ]; then mkdir -p RPMS/noarch; fi
 
 
-buildrpms: dirs
+buildrpms: dirs rocks-devel
 	(cd ../base;				\
-	make -C src/devel rpm;			\
-	rpm -e rocks-devel;			\
-	rpm -Uvh --force RPMS/$(ARCH)/rocks-devel*rpm;	\
+	. /etc/profile.d/rocks-devel.sh;		\
 	make -C src/anaconda rpm;			\
 	rpm -Uvh --nodeps --oldpackage --force RPMS/$(ARCH)/anaconda*.rpm; \
 	if [ ! -d RPMS/$(ARCH) ]; then mkdir -p RPMS/$(ARCH); fi; \
-	cp RPMS/$(ARCH)/rocks-devel*rpm ../rocksbuild/RPMS/$(ARCH); \
 	cp RPMS/$(ARCH)/anaconda*rpm ../rocksbuild/RPMS/$(ARCH) \
 	)
 	(cd ../ganglia;				\
+	. /etc/profile.d/rocks-devel.sh;		\
+	make -C src/confuse rpm;			\
+	rpm -Uvh --force RPMS/$(ARCH)/confuse*rpm;	\
+	make -C src/rrdtool rpm;			\
+	rpm -Uvh --force RPMS/$(ARCH)/rrdtool*rpm;	\
 	make -C src/monitor-core rpm;			\
 	rpm -Uvh --force RPMS/$(ARCH)/ganglia-monitor-core*rpm	\
 	)
 	
+rocks-devel:
+	(cd ../base;				\
+	make -C src/devel rpm;			\
+	rpm -e rocks-devel;			\
+	rpm -Uvh --force RPMS/$(ARCH)/rocks-devel*rpm;	\
+	cp RPMS/$(ARCH)/rocks-devel*rpm ../rocksbuild/RPMS/$(ARCH); \
+	)
+

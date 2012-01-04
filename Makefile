@@ -1,5 +1,5 @@
 #
-# $Id: Makefile,v 1.5 2011/11/05 04:15:22 phil Exp $
+# $Id: Makefile,v 1.6 2012/01/04 19:37:00 phil Exp $
 #
 # @Copyright@
 # 
@@ -55,6 +55,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.6  2012/01/04 19:37:00  phil
+# Small tweaks for build
+#
 # Revision 1.5  2011/11/05 04:15:22  phil
 # need ganglia-monitor-core to be installed to build ganglia-pylib in the base
 #
@@ -78,25 +81,22 @@ ARCH=`/bin/arch`
 -include $(ROLLSROOT)/etc/Rolls.mk
 -include Rolls.mk
 
-roll::  dirs buildrpms
+roll:: buildrpms
 
 dirs:	
 	if [ ! -d RPMS/$(ARCH) ]; then mkdir -p RPMS/$(ARCH); fi
 	if [ ! -d RPMS/noarch ]; then mkdir -p RPMS/noarch; fi
 
 
-buildrpms:
+buildrpms: dirs
 	(cd ../base;				\
 	make -C src/devel rpm;			\
 	rpm -e rocks-devel;			\
 	rpm -Uvh --force RPMS/$(ARCH)/rocks-devel*rpm;	\
-	make -C src/kudzu rpm;			\
-	rpm -Uvh --nodeps --oldpackage --force RPMS/$(ARCH)/kudzu*.rpm;	\
 	make -C src/anaconda rpm;			\
 	rpm -Uvh --nodeps --oldpackage --force RPMS/$(ARCH)/anaconda*.rpm; \
 	if [ ! -d RPMS/$(ARCH) ]; then mkdir -p RPMS/$(ARCH); fi; \
 	cp RPMS/$(ARCH)/rocks-devel*rpm ../rocksbuild/RPMS/$(ARCH); \
-	cp RPMS/$(ARCH)/kudzu*rpm ../rocksbuild/RPMS/$(ARCH); \
 	cp RPMS/$(ARCH)/anaconda*rpm ../rocksbuild/RPMS/$(ARCH) \
 	)
 	(cd ../ganglia;				\

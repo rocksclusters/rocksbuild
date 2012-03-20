@@ -1,5 +1,5 @@
 #
-# $Id: Makefile,v 1.7 2012/01/04 23:18:45 phil Exp $
+# $Id: Makefile,v 1.8 2012/03/20 21:48:28 phil Exp $
 #
 # @Copyright@
 # 
@@ -55,6 +55,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.8  2012/03/20 21:48:28  phil
+# Set arch to i386 when building on a 32bit machine
+#
 # Revision 1.7  2012/01/04 23:18:45  phil
 # Add confuse and rrdtool so that monitor-core can build properly
 #
@@ -79,7 +82,12 @@
 #
 
 # just enough information if rocks-devel rpm is not installed
-ARCH=`/bin/arch`
+TSTARCH=$(shell /bin/arch)
+ifeq ($(strip $(TSTARCH)),i686)
+ARCH=i386
+else
+ARCH=$(TSTARCH)
+endif
 
 -include $(ROLLSROOT)/etc/Rolls.mk
 -include Rolls.mk

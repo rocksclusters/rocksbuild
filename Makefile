@@ -1,5 +1,5 @@
 #
-# $Id: Makefile,v 1.8 2012/03/20 21:48:28 phil Exp $
+# $Id: Makefile,v 1.9 2012/03/29 03:25:20 phil Exp $
 #
 # @Copyright@
 # 
@@ -55,6 +55,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.9  2012/03/29 03:25:20  phil
+# rrdtool is now foundation-rrdtool
+#
 # Revision 1.8  2012/03/20 21:48:28  phil
 # Set arch to i386 when building on a 32bit machine
 #
@@ -112,7 +115,7 @@ buildrpms: dirs rocks-devel
 	make -C src/confuse rpm;			\
 	rpm -Uvh --force RPMS/$(ARCH)/confuse*rpm;	\
 	make -C src/rrdtool rpm;			\
-	rpm -Uvh --force RPMS/$(ARCH)/rrdtool*rpm;	\
+	rpm -Uvh --force RPMS/$(ARCH)/foundation-rrdtool*rpm;	\
 	make -C src/monitor-core rpm;			\
 	rpm -Uvh --force RPMS/$(ARCH)/ganglia-monitor-core*rpm	\
 	)

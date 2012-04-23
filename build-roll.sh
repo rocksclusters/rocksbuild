@@ -64,6 +64,7 @@ function usage ()
 	echo " -n      don't boostrap"  
 	echo " -o      build log output directry (default = /tmp)"  
 	echo " -p      prefix of roll directory (default = .)"  
+	echo " -s      subshell. run make roll via subshell. Source /etc/bashrc"  
 	echo " -x      don't do ssh-agent (ignores -u and -k)"  
 	echo " -z      don't remove roll/command rpm(s) after build"
 }
@@ -75,8 +76,9 @@ OUTDIR=/tmp
 KEYFILE=rocksbuild.id_rsa
 DOAGENT=1
 DOREMOVE=1
+SUBSHELL=0
 
-while getopts hk:no:p:u:xz opt
+while getopts hk:no:p:su:xz opt
 do
     case "$opt" in
       h)  usage; exit 1;;
@@ -84,6 +86,7 @@ do
       n)  BOOTSTRAP=0;;
       o)  OUTDIR="$OPTARG";;
       p)  PREFIX="$OPTARG";;
+      s)  SUBSHELL=1;;
       x)  DOAGENT=0;;
       z)  DOREMOVE=0;;
       \?)		# unknown flag
@@ -119,7 +122,11 @@ if [ -e bootstrap.sh -a $BOOTSTRAP -eq 1 ]; then
 fi
 echo "Starting Build of Roll $ROLLNAME:  `date`"
 
+if [ $SUBSHELL -eq 1 ]; then
+/bin/bash -c ". /etc/bashrc; make roll" &> $OUTDIR/make-${ROLLNAME}-roll.out
+else
 make roll &> $OUTDIR/make-${ROLLNAME}-roll.out
+fi
 
 echo "Roll Build Completed: `date`"
 

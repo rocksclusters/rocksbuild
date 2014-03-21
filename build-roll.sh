@@ -131,19 +131,23 @@ fi
 
 echo "Roll Build Completed: `date`"
 
-if [ -e ${ROLLNAME}*iso ]; then
+# Version.mk might have declared a ROLLNAME different than the directory
+ISONAME=$(grep ROLLNAME version.mk | awk '{print $NF}')
+[[ "$ISONAME" != "" ]] ||  ISONAME=$ROLLNAME
+
+if [ -e ${ISONAME}*iso ]; then
 	echo "SUCCESS: ISO image built"
-	ls -l ${ROLLNAME}*iso
+	ls -l ${ISONAME}*iso
 	if [ -d src/usersguide ]; then
 		echo "Building usersguide: `date`"
-		rocks add roll ${ROLLNAME}*iso
+		rocks add roll ${ISONAME}*iso
 		addrpms=`find RPMS -name '*command*' -print`
 		for i in $addrpms; do rpm -Uvh --force --nodeps $i; done
 		pushd src/usersguide
 		make rpm >> /tmp/make-${ROLLNAME}-roll.out 2>&1
 		popd
 		make reroll >> /tmp/make-${ROLLNAME}-roll.out 2>&1 		 
-		if [ $DOREMOVE -eq 1 ]; then rocks remove roll ${ROLLNAME}; fi
+		if [ $DOREMOVE -eq 1 ]; then rocks remove roll ${ISONAME}; fi
 		for i in $addrpms; do
 			p=`basename $i`
 			rmcmd=`python -c "import string;print string.join(str.split(str.split(\"$p\",'.')[0],'-')[:-1],'-')"`

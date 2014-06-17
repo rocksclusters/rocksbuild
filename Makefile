@@ -117,15 +117,6 @@ buildrpms: dirs rocks-devel
 	if [ ! -d RPMS/$(ARCH) ]; then mkdir -p RPMS/$(ARCH); fi; \
 	cp RPMS/$(ARCH)/anaconda*rpm ../rocksbuild/RPMS/$(ARCH) \
 	)
-	(cd ../ganglia;				\
-	. /etc/profile.d/rocks-devel.sh;		\
-	make -C src/confuse rpm;			\
-	rpm -Uvh --force RPMS/$(ARCH)/confuse*rpm;	\
-	make -C src/rrdtool rpm;			\
-	rpm -Uvh --force RPMS/$(ARCH)/foundation-rrdtool*rpm;	\
-	make -C src/monitor-core rpm;			\
-	rpm -Uvh --force RPMS/$(ARCH)/ganglia-monitor-core*rpm	\
-	)
 	
 rocks-devel:
 	(cd ../base;				\

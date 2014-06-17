@@ -119,6 +119,11 @@ make clean &> $OUTDIR/clean-${ROLLNAME}.out
 if [ -e bootstrap.sh -a $BOOTSTRAP -eq 1 ]; then
 	echo "Starting $ROLLNAME Roll Bootstrap: `date`"
 	sh ./bootstrap.sh &> $OUTDIR/make-${ROLLNAME}-bootstrap.out
+	if [ "$?" != "0" ]; then
+		echo bootstrap.sh failed aborting
+		echo check file: $OUTDIR/make-${ROLLNAME}-bootstrap.out
+		exit 1
+	fi
 	echo "Bootstrap Completed:  `date`"
 fi
 echo "Starting Build of Roll $ROLLNAME:  `date`"

@@ -136,7 +136,7 @@ fi
 echo "Roll Build Completed: `date`"
 
 # Version.mk might have declared a ROLLNAME different than the directory
-ISONAME=$(grep ROLLNAME version.mk | awk '{print $NF}')
+ISONAME=$(grep ROLLNAME version.mk | awk -F = '{print $NF}' | awk '{print $1}')
 [[ "$ISONAME" != "" ]] ||  ISONAME=$ROLLNAME
 
 if [ -e ${ISONAME}*iso ]; then

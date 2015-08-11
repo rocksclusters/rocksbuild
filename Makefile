@@ -109,13 +109,6 @@ dirs:
 
 
 buildrpms: dirs rocks-devel
-	(cd ../base;				\
-	. /etc/profile.d/rocks-devel.sh;		\
-	make -C src/anaconda rpm;			\
-	rpm -Uvh --nodeps --oldpackage --force RPMS/$(ARCH)/anaconda*.rpm; \
-	if [ ! -d RPMS/$(ARCH) ]; then mkdir -p RPMS/$(ARCH); fi; \
-	cp RPMS/$(ARCH)/anaconda*rpm ../rocksbuild/RPMS/$(ARCH) \
-	)
 	
 rocks-devel:
 	(cd ../base;				\

@@ -98,6 +98,12 @@ else
 ARCH=$(TSTARCH)
 endif
 
+OSVERSION=$(shell lsb_release -r | cut -f 2 | cut -d . -f 1)
+SRCROLL=base
+ifeq ($(strip $(OSVERSION)),7)
+SRCROLL=core
+endif
+
 -include $(ROLLSROOT)/etc/Rolls.mk
 -include Rolls.mk
 
@@ -111,7 +117,7 @@ dirs:
 buildrpms: dirs rocks-devel
 	
 rocks-devel:
-	(cd ../base;				\
+	(cd ../$(SRCROLL);				\
 	make -C src/devel rpm;			\
 	rpm -e rocks-devel;			\
 	rpm -Uvh --force RPMS/$(ARCH)/rocks-devel*rpm;	\
